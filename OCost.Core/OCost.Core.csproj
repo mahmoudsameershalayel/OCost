@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="APIViewModels\" />
-    <Folder Include="Constants\" />
-  </ItemGroup>
-
 </Project>

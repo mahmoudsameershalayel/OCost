@@ -21,8 +21,9 @@ namespace OCoast.Data.DBEntities
         public DateTime? Updated_at { get; set; } = DateTime.Now;
         public string? Updated_by { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public string? Country { get; set; } = string.Empty;
         public string? City { get; set; } = string.Empty;
+        public string? Country { get; set; } = string.Empty;
+        public string? PostCode { get; set; } = string.Empty;
         public string? ImageURL { get; set; }
     }
 }

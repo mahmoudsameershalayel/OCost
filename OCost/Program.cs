@@ -24,7 +24,10 @@ options.UseSqlServer(connectionString)
 // Add services to the container.
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(config =>
+{
+    config.RespectBrowserAcceptHeader = true;
+}).AddXmlDataContractSerializerFormatters();
 
 
 builder.Services.AddAuthentication(options =>
@@ -59,7 +62,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 
 //dependency injection
-builder.Services.AddScoped<ITokenService , TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
 
@@ -74,7 +77,7 @@ builder.Services.AddAutoMapper(typeof(ApplicationProfile).Assembly);
 
 var app = builder.Build();
 
-//Customize Middleware
+//Customize exception handling middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
 

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using OCoast.Data.DBEntities;
+using OCost.Data.DBEntities;
+using Ointernalata.DBEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,5 +61,24 @@ namespace OCoast.Data
             base.OnModelCreating(Builder);
 
         }
+
+        //Entities Dbset
+        public DbSet<SystemAdministrator> SystemAdministrators { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductSupplier> ProductSuppliers { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderLine> OrderLines { get; set; }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<Response> Responses { get; set; }
+        public DbSet<RequestLine> RequestLines { get; set; }
+        public DbSet<RequestSupplier> RequestSuppliers { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Bank> Banks { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+
     }
 }
