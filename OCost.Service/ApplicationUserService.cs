@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using OCoast.Data;
 using OCoast.Data.DBEntities;
+using OCost.Data.DBEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,9 @@ namespace OCoast.API.Infrastructure.Services.ApplicationUserServices
     public class ApplicationUserService : IApplicationUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public ApplicationUserService(UserManager<ApplicationUser> userManagr)
+        public ApplicationUserService(UserManager<ApplicationUser> userManager)
         {
-            _userManager = userManagr;
+            _userManager = userManager;
         }
 
         public async Task<bool> CheckPassword(ApplicationUser user, string password)
@@ -24,6 +26,6 @@ namespace OCoast.API.Infrastructure.Services.ApplicationUserServices
         public async Task<ApplicationUser> GetUserByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
-        }
+        }     
     }
 }

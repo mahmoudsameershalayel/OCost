@@ -1,19 +1,24 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
+using NLog;
 using OCoast.API.Infrastructure.Helpers;
 using OCoast.API.Infrastructure.Services.ApplicationUserServices;
 using OCoast.API.Infrastructure.Services.TokenServices;
 using OCoast.Data;
 using OCoast.Data.DBEntities;
 using OCost.API.Infrastructure.Middleware;
+using OCost.API.Infrastructure.Repositories;
+using OCost.API.Infrastructure.Services.LoggerService;
+using OCost.Service;
+using OCost.Service.Contracts;
+using System.Globalization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add services to the container.
 
 //connect to database 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -21,8 +26,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(connectionString)
 );
 
-// Add services to the container.
-
+//configure logging
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
+"/nlog.config"));
 
 builder.Services.AddControllers(config =>
 {
@@ -63,8 +69,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 //dependency injection
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
+
+//Register repository & service manager
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+
+
+//Register logger service
+builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -79,6 +92,17 @@ var app = builder.Build();
 
 //Customize exception handling middleware
 app.UseMiddleware<ExceptionMiddleware>();
+
+
+
+//Support localization
+var supportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("ar-SA") };
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
 
 
 // Configure the HTTP request pipeline.

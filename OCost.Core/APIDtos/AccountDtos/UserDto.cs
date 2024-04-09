@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OCoast.Core.APIDtos
+namespace OCost.Core.APIDtos.AccountDtos
 {
     public class UserDto
     {

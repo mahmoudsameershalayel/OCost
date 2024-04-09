@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OCost.API.Infrastructure\OCost.API.Infrastructure.csproj" />
+    <ProjectReference Include="..\OCost.Contracts\OCost.Contracts.csproj" />
+    <ProjectReference Include="..\OCost.Service.Contracts\OCost.Service.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
