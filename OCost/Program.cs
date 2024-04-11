@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using OCoast.API.Infrastructure.Helpers;
@@ -86,9 +87,9 @@ builder.Services.AddSwaggerGen();
 
 //Add Auto Mapper Service
 builder.Services.AddAutoMapper(typeof(ApplicationProfile).Assembly);
-
-
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
 
 //Customize exception handling middleware
 app.UseMiddleware<ExceptionMiddleware>();
@@ -96,7 +97,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 
 //Support localization
-var supportedCultures = new List<CultureInfo> { new CultureInfo("en-US"), new CultureInfo("ar-SA") };
+var supportedCultures = new List<CultureInfo> { new("en-US"), new("ar-SA") };
 app.UseRequestLocalization(new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture("en-US"),
