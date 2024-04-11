@@ -15,7 +15,9 @@ namespace OCost.API.Infrastructure.Repositories.ProductRepositories
         }
 
         public IList<Product> GetAllProducts() => FindAll().ToList();
-        public void AddProduct(Product product) => Create(product);
+        public Product GetProductById(int id) => FindByCondition(condition => condition.Id == id).SingleOrDefault();        public void AddProduct(Product product) => Create(product);
+        public void EditProduct(Product product) => Update(product);
+        public void DeleteProduct(Product product) => Delete(product);
      
     }
 

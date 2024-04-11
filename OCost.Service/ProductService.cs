@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OCost.API.Infrastructure.Errors;
 using OCost.API.Infrastructure.Repositories;
 using OCost.API.Infrastructure.Services.LoggerService;
 using OCost.Core.APIDtos;
@@ -17,7 +18,7 @@ namespace OCost.Service
         private readonly IRepositoryManager _repositoryManager;
         private readonly ILoggerManager _loggerManager;
         private readonly IMapper _mapper;
-        public ProductService(IRepositoryManager repositoryManager , ILoggerManager loggerManager , IMapper mapper)
+        public ProductService(IRepositoryManager repositoryManager, ILoggerManager loggerManager, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
             _loggerManager = loggerManager;
@@ -26,22 +27,74 @@ namespace OCost.Service
 
         public IList<ProductDto> GetAllProducts()
         {
-            try {
+            try
+            {
                 var products = _repositoryManager.ProductRepository.GetAllProducts();
-                return _mapper.Map<IList<ProductDto>>(products);   
-            } catch (Exception ex) {
+                return _mapper.Map<IList<ProductDto>>(products);
+            }
+            catch (Exception ex)
+            {
                 _loggerManager.LogError($"Something went wrong in the {nameof(GetAllProducts)} service method {ex}");
                 throw;
             }
         }
-        public void AddProduct(CreateUpdateProductDto dto) {
+        public ProductDto GetProductById(int id)
+        {
+            var product = _repositoryManager.ProductRepository.GetProductById(id);
+            if (product == null)
+            {
+                throw new ProductNotFoundException(id);
+            }
+            return _mapper.Map<ProductDto>(product);
+        }
+        public void AddProduct(CreateUpdateProductDto dto)
+        {
             try
-            {    var product = _mapper.Map<Product>(dto);   
+            {
+                var product = _mapper.Map<Product>(dto);
                 _repositoryManager.ProductRepository.AddProduct(product);
                 _repositoryManager.Save();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 _loggerManager.LogError($"Something went wrong in the {nameof(AddProduct)} service method {ex}");
+                throw;
+            }
+        }
+        public void EditProduct(int id, CreateUpdateProductDto dto)
+        {
+            try
+            {
+                var product = _repositoryManager.ProductRepository.GetProductById(id);
+                if (product == null)
+                {
+                    throw new ProductNotFoundException(id);
+                }
+                _mapper.Map(dto, product);
+                _repositoryManager.Save();
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(EditProduct)} service method {ex}");
+                throw;
+            }
+        }
+
+        public void DeleteProduct(int id)
+        {
+            try
+            {
+                var product = _repositoryManager.ProductRepository.GetProductById(id);
+                if (product == null)
+                {
+                    throw new ProductNotFoundException(id);
+                }
+                _repositoryManager.ProductRepository.DeleteProduct(product);
+                _repositoryManager.Save();
+            }
+            catch (Exception ex)
+            {
+                _loggerManager.LogError($"Something went wrong in the {nameof(EditProduct)} service method {ex}");
                 throw;
             }
         }

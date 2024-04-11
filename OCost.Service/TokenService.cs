@@ -25,8 +25,8 @@ namespace OCoast.API.Infrastructure.Services.TokenServices
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
+                new (JwtRegisteredClaimNames.NameId, user.Id),
+                new (JwtRegisteredClaimNames.Name, user.UserName),
             };
 
             var roles = await _userManager.GetRolesAsync(user);
