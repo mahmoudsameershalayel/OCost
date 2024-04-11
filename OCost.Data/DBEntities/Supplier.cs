@@ -1,6 +1,7 @@
 ﻿using OCoast.Data.DBEntities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +10,12 @@ namespace OCost.Data.DBEntities
 {
     public class Supplier
     {
+        [Column("SupplierId")]
         public int Id { get; set; }
-        public string ApplicationUserId { get; set; } = string.Empty;
-        public ApplicationUser ApplicationUser { get; set; } = new ApplicationUser();
-        public List<ProductSupplier> ProductSuppliers { get; set; } = new List<ProductSupplier>();
-        public List<RequestSupplier> RequestSuppliers { get; set; } = new List<RequestSupplier>();
+        [ForeignKey(nameof(ApplicationUser))]
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
+        public List<ProductSupplier> ProductSuppliers { get; set; } = [];
+        public List<RequestSupplier> RequestSuppliers { get; set; } = [];
     }
 }
